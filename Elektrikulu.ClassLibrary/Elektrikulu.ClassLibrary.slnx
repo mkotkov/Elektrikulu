@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../Elektrikulu.WpfApp/Elektrikulu.WpfApp.csproj" />
+  <Project Path="Elektrikulu.ClassLibrary.csproj" />
+</Solution>
