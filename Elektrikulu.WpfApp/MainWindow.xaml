@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Elektrikulu.WpfApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="#FFFBFBFB" Margin="1,0,-1,0">
+    <Grid Background="#FFF4F7F2" Margin="1,0,-1,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="33*"/>
             <ColumnDefinition Width="767*"/>
@@ -31,80 +31,90 @@
                    Fill="White"
                    Grid.Column="1"/>
 
-        <TextBlock x:Name="Tarbimine"
+        <TextBox x:Name="tarbimine"
+                   Text="0"
+                   TextChanged="Input_Changed"
                    HorizontalAlignment="Left"
                    Margin="40,190,0,0"
                    TextWrapping="Wrap"
                    VerticalAlignment="Top"
                    FontSize="20"
                    FontWeight="Bold"
-                   Grid.Column="1" Width="117" Height="27"><Run Language="et-ee" Text="0 "/><Run Text="kWh"/></TextBlock>
+                   Grid.Column="1" Width="117" Height="27" BorderBrush="#FFF0F2F9">
+
+        </TextBox>
+        <TextBlock x:Name="tarbimineError" Foreground="Red" FontSize="11" Visibility="Collapsed"/>
 
         <Label HorizontalAlignment="Left"
                Margin="30,151,0,0"
-               Content="Elektritarbimine"
+               Content="Elektritarbimine (kWh)"
                VerticalAlignment="Top"
                FontSize="18"
-               Grid.Column="1" Height="34" Width="134"/>
+               Grid.Column="1" Height="34" Width="202"/>
 
         <Rectangle HorizontalAlignment="Left"
                    Height="86"
                    Margin="246,149,0,0"
                    Stroke="#FFF1F1F1"
                    VerticalAlignment="Top"
-                   Width="220"
+                   Width="262"
                    RadiusX="8.136"
                    RadiusY="8.136"
                    Fill="White"
                    Grid.Column="1"/>
 
-        <TextBlock x:Name="börsihind"
+        <TextBox x:Name="borsihind"
+                   Text="0,0"
+                   TextChanged="Input_Changed"
                    HorizontalAlignment="Left"
                    Margin="271,190,0,0"
                    TextWrapping="Wrap"
                    VerticalAlignment="Top"
                    FontSize="20"
                    FontWeight="Bold"
-                   Grid.Column="1" Height="27" Width="143"><Run Text="0,0"/><Run Language="et-ee" Text="0"/><Run Text=" "/><Run Text="senti/kWh"/></TextBlock>
+                   Grid.Column="1" Height="27" Width="143" BorderBrush="#FFE1E3EA"></TextBox>
+        <TextBlock x:Name="borsihindError" Foreground="Red" FontSize="11" Visibility="Collapsed"/>
 
         <Label HorizontalAlignment="Left"
                Margin="265,150,0,0"
-               Content="Hetke börsihind"
+               Content="Hetke börsihind (senti/kWh)"
                VerticalAlignment="Top"
                FontSize="18"
-               Grid.Column="1" Height="34" Width="136"/>
+               Grid.Column="1" Height="34" Width="282"/>
 
         <Rectangle HorizontalAlignment="Left"
                    Height="86"
-                   Margin="480,149,0,0"
+                   Margin="525,149,0,0"
                    Stroke="#FFF1F1F1"
                    VerticalAlignment="Top"
-                   Width="220"
+                   Width="175"
                    RadiusX="8.136"
                    RadiusY="8.136"
                    Fill="White"
                    Grid.Column="1"/>
 
-        <TextBlock x:Name="käibemaks"
+        <TextBox x:Name="kaibemaks"
+                   Text="24"
+                   TextChanged="Input_Changed"
                    HorizontalAlignment="Left"
-                   Margin="505,190,0,0"
-                   TextWrapping="Wrap"
-                   Text="24 %"
+                   Margin="551,190,0,0"
                    VerticalAlignment="Top"
                    FontSize="20"
                    FontWeight="Bold"
-                   Grid.Column="1" Height="27" Width="46"/>
+                   Grid.Column="1" Height="27" Width="84" BorderBrush="#FFEBEEF7">
+        </TextBox>
+        <TextBlock x:Name="kaibemaksError" Foreground="Red" FontSize="11" Visibility="Collapsed"/>
 
         <Label HorizontalAlignment="Left"
-               Margin="495,151,0,0"
-               Content="Käibemaks"
+               Margin="544,151,0,0"
+               Content="Käibemaks (%)"
                VerticalAlignment="Top"
                FontSize="18"
-               Grid.Column="1" Height="34" Width="95"/>
+               Grid.Column="1" Height="34" Width="126"/>
 
         <Label Content="Arve kokku"
                HorizontalAlignment="Left"
-               Margin="583,255,0,141"
+               Margin="583,257,0,111"
                FontSize="20"
                FontWeight="Bold"
                Foreground="#FF033E06"
@@ -112,7 +122,7 @@
 
         <Label x:Name="arve_kokku" Content="0.00 €"
                HorizontalAlignment="Left"
-               Margin="271,282,0,51"
+               Margin="271,284,0,49"
                FontSize="48"
                FontWeight="Bold"
                Foreground="#FF033E06"
@@ -127,6 +137,6 @@
                FontSize="14"
                HorizontalContentAlignment="Right"
                Grid.Column="1" Height="29" Width="197"/>
-        <CheckBox Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="670,162,0,0" VerticalAlignment="Top" Checked="Kaibemaksu_Checked" Width="15" Height="15"/>
+        <CheckBox x:Name="kaibemaks_check" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="670,162,0,0" VerticalAlignment="Top" Checked="Input_Changed" Unchecked="Input_Changed" Width="15" Height="15"/>
     </Grid>
 </Window>

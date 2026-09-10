@@ -8,13 +8,23 @@
 
         public static decimal Arve_lugemine(decimal kogus, decimal hind, decimal kaibemaksu_protsent, bool kaibemaksu_kasutamine)
         {
-            decimal kaibemaksu_summa = (hind * kogus) * (kaibemaksu_protsent / 100);
-            decimal kogusumma = (hind * kogus);
+            hind /= 100;
+            decimal taastuvenergia_tasu = kogus * (0.84m / 100);
+            decimal varustuskindluse_tasu = kogus * (0.758m / 100);
+            decimal elektriaktsiis = kogus * (0.21m / 100);
+            decimal vorguuhenduse_kuutasu = 0.82m;
+
+            decimal uldtariif = kogus * (7.83m / 100);
+            decimal tasakaalustamisvoimsuse = kogus * (0.373m / 100);
+
+            decimal kogusumma = (hind * kogus) + taastuvenergia_tasu + varustuskindluse_tasu + elektriaktsiis + uldtariif + tasakaalustamisvoimsuse + vorguuhenduse_kuutasu;
+            decimal kaibemaksu_summa = (kogusumma * (kaibemaksu_protsent / 100));
+            
             if (kaibemaksu_kasutamine)
             {
                 kogusumma += kaibemaksu_summa;
             }
-            return kogusumma;
+            return Math.Round(kogusumma, 2, MidpointRounding.AwayFromZero);
         }
     }
 }
