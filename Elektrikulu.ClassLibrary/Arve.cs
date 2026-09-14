@@ -1,10 +1,17 @@
 ﻿namespace Elektrikulu.ClassLibrary
 {
-    public class Arve
+    public static class Arve
     {
-       static void Main(string[] args)
-       {
-       }
+        public const decimal MinTarbimine = 0m;
+        public const decimal MaxTarbimine = 100000m; // kWh 30 päeva jooksul
+
+        public static bool IsValidTarbimine(decimal kogus) =>
+            kogus >= MinTarbimine && kogus <= MaxTarbimine;
+
+        public static bool IsValidHind(decimal hind) => hind >= 0;
+
+        public static bool IsValidKaibemaks(decimal protsent) =>
+            protsent >= 0 && protsent <= 100;
 
         public static decimal Arve_lugemine(decimal kogus, decimal hind, decimal kaibemaksu_protsent, bool kaibemaksu_kasutamine)
         {
