@@ -1,4 +1,5 @@
 ﻿using Elektrikulu.ClassLibrary;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
@@ -23,13 +24,13 @@ namespace Elektrikulu.WpfApp
         private void Recalculate()
         {
             bool tarbimineOk = ValidateField(tarbimine, tarbimineError,
-                "Sisesta korrektne kogus", out decimal tarbimine_dec);
+                "Sisesta kogus vahemikus 0–100000 kWh", Arve.IsValidTarbimine, out decimal tarbimine_dec);
 
             bool borsihindOk = ValidateField(borsihind, borsihindError,
-                "Sisesta korrektne börsihind", out decimal borsihind_dec);
+                "Sisesta korrektne börsihind (≥ 0)", Arve.IsValidHind, out decimal borsihind_dec);
 
             bool kaibemaksOk = ValidateField(kaibemaks, kaibemaksError,
-                "Sisesta korrektne käibemaks", out decimal kaibemaks_dec);
+                "Sisesta käibemaks vahemikus 0–100%", Arve.IsValidKaibemaks, out decimal kaibemaks_dec);
 
             if (!tarbimineOk || !borsihindOk || !kaibemaksOk)
             {
@@ -41,25 +42,42 @@ namespace Elektrikulu.WpfApp
             }
 
             bool kaibemaksChecked = kaibemaks_check?.IsChecked ?? false;
-            decimal tulemus = Arve.Arve_lugemine(
-                tarbimine_dec, borsihind_dec, kaibemaks_dec,
-                kaibemaksChecked);
 
-            if (arve_kokku != null)
+            try
             {
-                arve_kokku.Content = $"{tulemus} €";
+                decimal tulemus = Arve.Arve_lugemine(
+                    tarbimine_dec, borsihind_dec, kaibemaks_dec,
+                    kaibemaksChecked);
+
+                if (arve_kokku != null)
+                {
+                    arve_kokku.Content = $"{tulemus} €";
+                }
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                if (arve_kokku != null)
+                {
+                    arve_kokku.Content = "0.00 €";
+                }
+
+                MessageBox.Show(
+                    ex.Message,
+                    "Vigane sisend",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
         private bool ValidateField(System.Windows.Controls.TextBox box,
             System.Windows.Controls.TextBlock errorText,
-            string errorMessage, out decimal value)
+            string errorMessage, Func<decimal, bool> isValid, out decimal value)
         {
-           
-
             if (box == null) { value = 0; return false; }
+
             string normalized = box.Text.Replace(",", ".").Replace(" ", "");
-            bool ok = decimal.TryParse(normalized, NumberStyles.Any, CultureInfo.InvariantCulture, out value) && value >= 0;
+            bool parsed = decimal.TryParse(normalized, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+            bool ok = parsed && isValid(value);
 
             if (ok)
             {

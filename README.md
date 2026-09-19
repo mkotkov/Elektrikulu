@@ -16,7 +16,7 @@ Rakendus võimaldab arvutada elektrienergia kogukulu vastavalt tarbitud kogusele
 * Elektrikulu arvutamine
 * Tarbitud koguse ja ühikuhinna arvestamine
 * Käibemaksu lisamise võimalus
-* Arvutusloogika eraldamine kasutajaliidesest
+* Arvutusloogika ja sisendite valideerimine on eraldatud kasutajaliidesest (asuvad `Elektrikulu.ClassLibrary` teegis)
 
 ## Projekti eesmärk
 
@@ -36,8 +36,21 @@ Ava projekt Visual Studios, ehita lahendus ja käivita WPF-rakendus.
 - Üldtariif (võrguteenus): 7,83 senti/kWh
 - Tasakaalustamisvõimsuse tasu: 0,373 senti/kWh
 
+Kõik tariifid on defineeritud `Elektrikulu.ClassLibrary.Arve` klassis nimetatud konstantidena.
+
+## Sisendite valideerimine
+
+Teek kontrollib sisendeid enne arvutamist ja viskab vea, kui väärtused on lubatud vahemikust väljas:
+
+| Sisend | Lubatud vahemik | Viga sobimatu väärtuse korral |
+|---|---|---|
+| Tarbitud kogus (kWh) | 0–100 000 | `ArgumentOutOfRangeException`: "Tarbimiskogus peab jääma vahemikku 0–100000 kWh." |
+| Hind (senti/kWh) | ≥ 0 | `ArgumentOutOfRangeException`: "Hind ei tohi olla negatiivne." |
+| Käibemaksu protsent | 0–100 | `ArgumentOutOfRangeException`: "Käibemaksu protsent peab jääma vahemikku 0–100." |
+
 ## Kontrollnäited
+
 1. Tarbimine 300 kWh, börsihind 8,5 senti/kWh, käibemaks ei kasutata
-   → oodatud tulemus: ... €
-2. Tarbimine -50 (vigane sisend)
-   → oodatud veateade: "Sisesta korrektne kogus"
+   → oodatud tulemus: **56,35 €**
+2. Tarbimine -50 kWh (vigane sisend)
+   → oodatud tulemus: viskab `ArgumentOutOfRangeException` sõnumiga "Tarbimiskogus peab jääma vahemikku 0–100000 kWh."
